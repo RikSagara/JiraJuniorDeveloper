@@ -10,7 +10,7 @@ public class User {
     @GeneratedValue
     private int Id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String name;
 
     @Column(nullable = false)
