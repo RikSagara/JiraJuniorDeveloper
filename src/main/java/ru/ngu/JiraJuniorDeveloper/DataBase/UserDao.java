@@ -46,7 +46,9 @@ public class UserDao {
     }
 
     public List<User> findUsersByUserRole(UserRole role) {
-        return manager.createQuery("SELECT u from User u where u.role=:role", User.class).getResultList();
+        return manager.createQuery("SELECT u from User u where u.role=:role", User.class)
+                .setParameter("role",role)
+                .getResultList();
     }
 
     public List<User> findAllUsers() {

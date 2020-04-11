@@ -1,6 +1,8 @@
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import ru.ngu.JiraJuniorDeveloper.Model.*;
 
 import javax.persistence.EntityManager;
@@ -17,6 +19,9 @@ public class StoryTest {
 
     private EntityManagerFactory factory;
     private EntityManager manager;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void connect() {
@@ -75,6 +80,7 @@ public class StoryTest {
     @Test
     public void CreateNonUniqueStory()
     {
+        exceptionRule.expect(Exception.class);
         User reporter = new User();
         reporter.setName("scott");
         reporter.setPassword("tiger");

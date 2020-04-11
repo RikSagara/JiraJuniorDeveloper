@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.ngu.JiraJuniorDeveloper.DataBase.StoryDao;
+import ru.ngu.JiraJuniorDeveloper.DataBase.TaskDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
 import ru.ngu.JiraJuniorDeveloper.Model.*;
 
@@ -10,18 +11,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.List;
+public class TaskDaoTest {
 
-public class StoryDaoTest {
     private EntityManagerFactory factory;
     private EntityManager manager;
     private UserDao userDao;
-    private StoryDao storyDao;
+    private TaskDao taskDao;
     @Before
     public void connect() {
         factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
         manager = factory.createEntityManager();
         userDao=new UserDao(manager);
-        storyDao=new StoryDao(manager);
+        taskDao=new TaskDao(manager);
     }
 
     @After
@@ -35,37 +36,37 @@ public class StoryDaoTest {
     }
 
     @Test
-    public void CreateStory(){
+    public void CreateTask(){
         User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
-        Story s=storyDao.createStory("тестовая история","LVLP",100,reporter);
+        Task s=taskDao.createTask("тестовая история","LVLP",100,reporter);
         Assert.assertNotEquals(s.getId(),0);
     }
     @Test
-    public void CreateStoryByInstance(){
+    public void CreateTaskByInstance(){
         User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
-        Story s=new Story();
+        Task s=new Task();
         s.setTitle("Стори через экземпляр класса");
-        s.setStoryCode("LVLP");
-        s.setStoryNumber(2);
+        s.setTaskCode("LVLP");
+        s.setTaskNumber(2);
         s.setAssignee(assignee);
         s.setReporter(reporter);
         s.setStatus(TaskStatus.ToDo);
         s.setDescription("Описание стори через экземпляр класса");
-        storyDao.createStory(s);
+        taskDao.createTask(s);
 
     }
 
     @Test
-    public void FindStoryByUser(){
+    public void FindTaskByUser(){
         User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
         User assigneeSensei =userDao.createUser("Sensei","12345", UserRole.LoggedUser);
         for(int i=0;i<11;i++) {
-            Story s = new Story();
+            Task s = new Task();
             s.setTitle("Стори через экземпляр класса");
-            s.setStoryCode("LVLP");
-            s.setStoryNumber(i);
+            s.setTaskCode("LVLP");
+            s.setTaskNumber(i);
             if(i==3){
                 s.setAssignee(assigneeSensei);
             }else{
@@ -74,53 +75,53 @@ public class StoryDaoTest {
             s.setReporter(reporter);
             s.setStatus(TaskStatus.ToDo);
             s.setDescription("Описание стори через экземпляр класса");
-            storyDao.createStory(s);
+            taskDao.createTask(s);
         }
-        List<Story> foundStories=storyDao.findStoriesByUser(assigneeSensei.getName());
-        Assert.assertEquals(foundStories.size(),1);
+        List<Task> foundTasks=taskDao.findTasksByUser(assigneeSensei.getName());
+        Assert.assertEquals(foundTasks.size(),1);
 
     }
     @Test
-    public void FindStoryByCodeAndNumber(){
+    public void FindTaskByCodeAndNumber(){
         User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
 
         for(int i=0;i<12;i++) {
-            Story s = new Story();
+            Task s = new Task();
             s.setTitle("Стори через экземпляр класса");
-            s.setStoryCode("LVLP");
-            s.setStoryNumber(i);
+            s.setTaskCode("LVLP");
+            s.setTaskNumber(i);
             s.setAssignee(assignee);
             s.setReporter(reporter);
             s.setStatus(TaskStatus.ToDo);
             s.setDescription("Описание стори через экземпляр класса");
-            storyDao.createStory(s);
+            taskDao.createTask(s);
         }
 
-        Story foundedStory=storyDao.findStoryByCodeAndNumber("LVLP",5);
-        Assert.assertNotNull(foundedStory);
+        Task foundedTask=taskDao.findTaskByCodeAndNumber("LVLP",5);
+        Assert.assertNotNull(foundedTask);
 
     }
 
     @Test
-    public void FindStoryById(){
+    public void FindTaskById(){
         User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
 
         for(int i=0;i<10;i++) {
-            Story s = new Story();
+            Task s = new Task();
             s.setTitle("Стори через экземпляр класса");
-            s.setStoryCode("LVLP");
-            s.setStoryNumber(i);
+            s.setTaskCode("LVLP");
+            s.setTaskNumber(i);
             s.setAssignee(assignee);
             s.setReporter(reporter);
             s.setStatus(TaskStatus.ToDo);
             s.setDescription("Описание стори через экземпляр класса");
-            storyDao.createStory(s);
+            taskDao.createTask(s);
         }
 
-        Story foundedStory=storyDao.findStoryById(5);
-        Assert.assertNotNull(foundedStory);
+        Task foundedTask=taskDao.findTaskById(5);
+        Assert.assertNotNull(foundedTask);
 
     }
 
