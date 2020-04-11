@@ -49,4 +49,29 @@ public class UserDao {
         return manager.createQuery("SELECT u from User u where u.role=:role", User.class).getResultList();
     }
 
+    public List<User> findAllUsers() {
+        return manager.createQuery("SELECT u from User u").getResultList();
+    }
+
+    @Nullable
+    public User findUserById(int id) {
+        try {
+            return manager.createQuery("from User u WHERE u.Id = :id", User.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException cause) {
+            return null;
+        }
+    }
+
+    public void editUser(int id, String login, String password, UserRole role) {
+        manager.getTransaction().begin();
+        manager.createQuery("update User u set u.name=:login,u.password=:password,u.role=:role where u.Id=:id")
+               .setParameter("id",id)
+               .setParameter("login",login)
+               .setParameter("password",password)
+               .setParameter("role",role).executeUpdate();
+        manager.getTransaction().commit();
+
+    }
 }

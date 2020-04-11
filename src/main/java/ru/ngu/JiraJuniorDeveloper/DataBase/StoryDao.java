@@ -40,8 +40,25 @@ public class StoryDao {
         return createdStory;
     }
 
+    public Story createStory(Story createdStory){
+        manager.getTransaction().begin();
+        try {
+            manager.persist(createdStory);
+        } catch (Throwable cause) {
+            manager.getTransaction().rollback();
+            throw cause;
+        }
+
+        manager.getTransaction().commit();
+        manager.refresh(createdStory);
+        return createdStory;
+    }
+
+
     public List<Story> findStoriesByUser(String userName) {
-        return manager.createQuery("SELECT s from Story s where s.assignee.name=:userName or s.reporter.name=:userName", Story.class).getResultList();
+        return manager.createQuery("SELECT s from Story s where s.assignee.name=:userName or s.reporter.name=:userName", Story.class)
+                .setParameter("userName",userName)
+                .getResultList();
     }
 
     @Nullable
@@ -61,7 +78,6 @@ public class StoryDao {
         try {
             return manager.createQuery("from Story u WHERE u.id = :id", Story.class)
                     .setParameter("id",id)
-
                     .getSingleResult();
         } catch (NoResultException cause) {
             return null;

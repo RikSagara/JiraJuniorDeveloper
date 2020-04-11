@@ -27,7 +27,7 @@ public class Story {
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private TaskStatus status;
-    @Column
+    @Column(length = 1000)
     private String description;
 
     @OneToMany

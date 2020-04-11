@@ -1,6 +1,7 @@
 package ru.ngu.JiraJuniorDeveloper.DataBase;
 
 import com.sun.istack.Nullable;
+import ru.ngu.JiraJuniorDeveloper.Model.Story;
 import ru.ngu.JiraJuniorDeveloper.Model.Task;
 import ru.ngu.JiraJuniorDeveloper.Model.TaskStatus;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
@@ -18,7 +19,7 @@ public class TaskDao {
         this.manager = manager;
     }
 
-    public Task createStory(String title, String taskCode, Integer taskNumber, User reporter){
+    public Task createTask(String title, String taskCode, Integer taskNumber, User reporter){
         Task createdTask=new Task();
         createdTask.setTitle(title);
         createdTask.setTaskCode(taskCode);
@@ -39,12 +40,28 @@ public class TaskDao {
         return createdTask;
     }
 
-    public List<Task> findStoriesByUser(String userName) {
-        return manager.createQuery("SELECT t from Task t where t.assignee.name=:userName or t.reporter.name=:userName", Task.class).getResultList();
+    public Task createTask(Task createdTask){
+        manager.getTransaction().begin();
+        try {
+            manager.persist(createdTask);
+        } catch (Throwable cause) {
+            manager.getTransaction().rollback();
+            throw cause;
+        }
+
+        manager.getTransaction().commit();
+        manager.refresh(createdTask);
+        return createdTask;
+    }
+
+    public List<Task> findTasksByUser(String userName) {
+        return manager.createQuery("SELECT t from Task t where t.assignee.name=:userName or t.reporter.name=:userName", Task.class)
+                .setParameter("userName",userName)
+                .getResultList();
     }
 
     @Nullable
-    public Task findStoryByCodeAndNumber(String taskCode,int taskNumber){
+    public Task findTaskByCodeAndNumber(String taskCode,int taskNumber){
         try {
             return manager.createQuery("from Task t WHERE t.taskCode = :taskCode and t.taskNumber=:taskNumber", Task.class)
                     .setParameter("taskCode",taskCode)
@@ -56,7 +73,7 @@ public class TaskDao {
     }
 
     @Nullable
-    public Task findStoryById(int id){
+    public Task findTaskById(int id){
         try {
             return manager.createQuery("from Task t WHERE t.id = :id", Task.class)
                     .setParameter("id",id)

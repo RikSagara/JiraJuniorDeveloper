@@ -26,7 +26,7 @@ public class Task {
 
     @Enumerated(EnumType.ORDINAL)
     private TaskStatus status;
-
+    @Column(length = 1000)
     private String description;
 
     @OneToMany(targetEntity = User.class)
