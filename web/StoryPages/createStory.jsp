@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+<jsp:useBean id="storyForm" type="ru.ngu.JiraJuniorDeveloper.Web.Forms.ItemForm" scope="session" />
 <html>
 <head>
 	<title>Создать Story</title>
@@ -13,7 +14,7 @@
 				Название
 			</td>
 			<td>
-				<input type="text" name="title" >
+				<input name="title">
 			</td>
 		</tr>
 		<tr>
@@ -21,7 +22,7 @@
 				Буквенный код
 			</td>
 			<td>
-				<input  name="storyCode" >
+				<input  name="itemCode" >
 			</td>
 		</tr>
 		<tr>
@@ -29,7 +30,7 @@
 				Цифровой код
 			</td>
 			<td>
-				<input name="storyNumber">
+				<input name="itemNumber" >
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +38,7 @@
 				Описание
 			</td>
 			<td>
-				<textarea rows="5" name="desc"></textarea>
+				<textarea rows="5" name="description"></textarea>
 			</td>
 		</tr>
 

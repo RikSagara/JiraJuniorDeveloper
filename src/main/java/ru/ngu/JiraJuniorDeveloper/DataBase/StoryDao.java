@@ -1,6 +1,9 @@
 package ru.ngu.JiraJuniorDeveloper.DataBase;
 
 import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import ru.ngu.JiraJuniorDeveloper.Model.Story;
 import ru.ngu.JiraJuniorDeveloper.Model.TaskStatus;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
@@ -11,9 +14,11 @@ import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Objects;
 
+@Repository
 public class StoryDao {
-    private EntityManager manager;
 
+    private final EntityManager manager;
+    @Autowired
     public StoryDao(EntityManager manager) {
         Objects.requireNonNull(manager, "EntityManager shouldn't be null");
         this.manager = manager;

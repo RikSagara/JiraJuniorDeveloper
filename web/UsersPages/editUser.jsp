@@ -1,5 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+
 <html>
 <head>
 	<title>Редактирование пользователя</title>
@@ -19,13 +20,13 @@
 		<td><b>Роль</b></td>
 		<td>
 			<select name="role" >
-				<option value="Admin" >Администратор</option>
+				<option value="Admin">Администратор</option>
 				<option value="LoggedUser" selected>Пользователь</option>
 			</select>
 		</td>
 	</tr>
 </table>
-	<input hidden name = "id" value="${form.id}"/>
+	<input hidden name = "userId" value="${form.id}"/>
 	<br/>
 	<input type = "submit" value="Изменить"/>
 </form>

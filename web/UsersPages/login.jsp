@@ -9,7 +9,7 @@
     <table>
         <tr>
             <td><b>Логин</b></td>
-            <td><input name = "username" /></td>
+            <td><input name = "username" value="${param['login']}" /></td>
         </tr>
         <tr>
             <td><b>Пароль</b></td>

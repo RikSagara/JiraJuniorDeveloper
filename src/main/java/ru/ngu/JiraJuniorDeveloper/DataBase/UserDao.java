@@ -1,16 +1,22 @@
 package ru.ngu.JiraJuniorDeveloper.DataBase;
 
+import com.sun.istack.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
 import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
 import javax.persistence.NoResultException;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
-import com.sun.istack.Nullable;
 
+
+@Repository
 public class UserDao {
-    private EntityManager manager;
 
+    private EntityManager manager;
+    @Autowired
     public UserDao(EntityManager manager) {
         Objects.requireNonNull(manager, "EntityManager shouldn't be null");
         this.manager = manager;
