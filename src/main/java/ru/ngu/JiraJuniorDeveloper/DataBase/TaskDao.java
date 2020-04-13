@@ -4,6 +4,7 @@ import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ngu.JiraJuniorDeveloper.Model.Story;
 import ru.ngu.JiraJuniorDeveloper.Model.Task;
 import ru.ngu.JiraJuniorDeveloper.Model.TaskStatus;
@@ -11,50 +12,33 @@ import ru.ngu.JiraJuniorDeveloper.Model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 @Repository
 public class TaskDao {
 
-    private final EntityManager manager;
-    @Autowired
-    public TaskDao(EntityManager manager) {
-        Objects.requireNonNull(manager, "EntityManager shouldn't be null");
-        this.manager = manager;
-    }
+    @PersistenceContext
+    private EntityManager manager;
 
+    @Transactional
     public Task createTask(String title, String taskCode, Integer taskNumber, User reporter){
         Task createdTask=new Task();
         createdTask.setTitle(title);
         createdTask.setTaskCode(taskCode);
         createdTask.setTaskNumber(taskNumber);
         createdTask.setReporter(reporter);
-
         createdTask.setStatus(TaskStatus.ToDo);
-        manager.getTransaction().begin();
-        try {
-            manager.persist(createdTask);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
 
-        manager.getTransaction().commit();
-
+        manager.persist(createdTask);
+       
         return createdTask;
     }
 
-    public Task createTask(Task createdTask){
-        manager.getTransaction().begin();
-        try {
-            manager.persist(createdTask);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
+    @Transactional
+    public Task createTask(Task createdTask) {
+        manager.persist(createdTask);
 
-        manager.getTransaction().commit();
-        manager.refresh(createdTask);
         return createdTask;
     }
 

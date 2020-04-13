@@ -3,6 +3,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import ru.ngu.JiraJuniorDeveloper.Configurations.TestConfiguration;
 import ru.ngu.JiraJuniorDeveloper.DataBase.StoryDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
@@ -12,34 +20,22 @@ import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserDaoTest {
 
-    private EntityManagerFactory factory;
+    @PersistenceContext
     private EntityManager manager;
+    @Autowired
     private UserDao userDao;
 
-    @Before
-    public void connect() {
-        factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        manager = factory.createEntityManager();
-        userDao=new UserDao(manager);
 
-    }
-
-    @After
-    public void close() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
-    }
     @Test
     public void CreateUser(){
-        User createdUser=userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User createdUser=userDao.createUser("scotty","tigy", UserRole.LoggedUser);
         Assert.assertNotEquals(0,createdUser.getId());
     }
 
@@ -72,7 +68,7 @@ public class UserDaoTest {
         userDao.createUser("RikSogara","12345", UserRole.LoggedUser);
         userDao.createUser("RikSgara","12345", UserRole.LoggedUser);
         List<User> foundUser=userDao.findAllUsers();
-        Assert.assertEquals(4,foundUser.size());
+        Assert.assertEquals(5,foundUser.size());
 
     }
 
@@ -82,7 +78,7 @@ public class UserDaoTest {
         userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
         userDao.createUser("RikSogara","12345", UserRole.LoggedUser);
         userDao.createUser("RikSgara","12345", UserRole.LoggedUser);
-        User foundUser=userDao.findUserById(2);
+        User foundUser=userDao.findUserById(3);
         Assert.assertEquals("RikSagara",foundUser.getName());
         Assert.assertEquals("1234",foundUser.getPassword());
         Assert.assertEquals(UserRole.LoggedUser,foundUser.getRole());
@@ -94,9 +90,10 @@ public class UserDaoTest {
     public void EditUser(){
         userDao.createUser("RisKagara","123456", UserRole.Admin);
         userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
-        userDao.editUser(2,"RikSagara","1234567890",UserRole.Admin);
-        User foundUser=userDao.findUserById(2);
-        manager.refresh(foundUser);
+        userDao.editUser(3,"RikSagara","1234567890",UserRole.Admin);
+
+        User foundUser=userDao.findUserById(3);
+
         Assert.assertEquals("1234567890",foundUser.getPassword());
         Assert.assertEquals(UserRole.Admin,foundUser.getRole());
 

@@ -20,7 +20,7 @@ public class SpringDaoTest {
 
     @Test
     public void CreateUser(){
-        User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User reporter =userDao.createUser("scotty","tigy", UserRole.LoggedUser);
 
     }
 }

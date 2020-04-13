@@ -2,6 +2,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.ngu.JiraJuniorDeveloper.Configurations.TestConfiguration;
 import ru.ngu.JiraJuniorDeveloper.DataBase.StoryDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.TaskDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
@@ -10,40 +16,29 @@ import ru.ngu.JiraJuniorDeveloper.Model.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TestConfiguration.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TaskDaoTest {
 
-    private EntityManagerFactory factory;
+    @PersistenceContext
     private EntityManager manager;
+    @Autowired
     private UserDao userDao;
+    @Autowired
     private TaskDao taskDao;
-    @Before
-    public void connect() {
-        factory = Persistence.createEntityManagerFactory("TestPersistenceUnit");
-        manager = factory.createEntityManager();
-        userDao=new UserDao(manager);
-        taskDao=new TaskDao(manager);
-    }
-
-    @After
-    public void close() {
-        if (manager != null) {
-            manager.close();
-        }
-        if (factory != null) {
-            factory.close();
-        }
-    }
 
     @Test
     public void CreateTask(){
-        User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User reporter =userDao.findUserByName("scott");
         Task s=taskDao.createTask("тестовая история","LVLP",100,reporter);
         Assert.assertNotEquals(s.getId(),0);
     }
     @Test
     public void CreateTaskByInstance(){
-        User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User reporter =userDao.findUserByName("scott");
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
         Task s=new Task();
         s.setTitle("Стори через экземпляр класса");
@@ -59,7 +54,7 @@ public class TaskDaoTest {
 
     @Test
     public void FindTaskByUser(){
-        User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User reporter =userDao.findUserByName("scott");
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
         User assigneeSensei =userDao.createUser("Sensei","12345", UserRole.LoggedUser);
         for(int i=0;i<11;i++) {
@@ -83,7 +78,7 @@ public class TaskDaoTest {
     }
     @Test
     public void FindTaskByCodeAndNumber(){
-        User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User reporter =userDao.findUserByName("scott");
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
 
         for(int i=0;i<12;i++) {
@@ -105,7 +100,7 @@ public class TaskDaoTest {
 
     @Test
     public void FindTaskById(){
-        User reporter =userDao.createUser("scott","tiger", UserRole.LoggedUser);
+        User reporter =userDao.findUserByName("scott");
         User assignee =userDao.createUser("RikSagara","1234", UserRole.LoggedUser);
 
         for(int i=0;i<10;i++) {

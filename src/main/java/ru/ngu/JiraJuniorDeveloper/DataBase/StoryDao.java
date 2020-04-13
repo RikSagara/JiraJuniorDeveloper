@@ -4,6 +4,7 @@ import com.sun.istack.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.ngu.JiraJuniorDeveloper.Model.Story;
 import ru.ngu.JiraJuniorDeveloper.Model.TaskStatus;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
@@ -11,51 +12,36 @@ import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
 public class StoryDao {
 
-    private final EntityManager manager;
-    @Autowired
-    public StoryDao(EntityManager manager) {
-        Objects.requireNonNull(manager, "EntityManager shouldn't be null");
-        this.manager = manager;
-    }
+    @PersistenceContext
+    private EntityManager manager;
 
-    public Story createStory(String title, String storyCode, Integer storyNumber, User reporter){
-        Story createdStory=new Story();
+    @Transactional
+    public Story createStory(String title, String storyCode, Integer storyNumber, User reporter) {
+        Story createdStory = new Story();
         createdStory.setTitle(title);
         createdStory.setStoryCode(storyCode);
         createdStory.setStoryNumber(storyNumber);
         createdStory.setReporter(reporter);
 
         createdStory.setStatus(TaskStatus.ToDo);
-        manager.getTransaction().begin();
-        try {
-            manager.persist(createdStory);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
 
-        manager.getTransaction().commit();
+        manager.persist(createdStory);
+
 
         return createdStory;
     }
 
+    @Transactional
     public Story createStory(Story createdStory){
-        manager.getTransaction().begin();
-        try {
-            manager.persist(createdStory);
-        } catch (Throwable cause) {
-            manager.getTransaction().rollback();
-            throw cause;
-        }
+        manager.persist(createdStory);
 
-        manager.getTransaction().commit();
-        manager.refresh(createdStory);
         return createdStory;
     }
 
