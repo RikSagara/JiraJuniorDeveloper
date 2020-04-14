@@ -8,8 +8,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -38,17 +36,17 @@ public class TaskTest {
     @Test
     public void CreateTask(){
         User reporter = new User();
-        reporter.setName("scott");
+        reporter.setUserName("scott");
         reporter.setPassword("tiger");
         reporter.setRole(UserRole.LoggedUser);
 
         User assignee = new User();
-        assignee.setName("student");
+        assignee.setUserName("student");
         assignee.setPassword("123456");
         assignee.setRole(UserRole.LoggedUser);
 
         User subscriber = new User();
-        subscriber.setName("teacher");
+        subscriber.setUserName("teacher");
         subscriber.setPassword("qwerty");
         subscriber.setRole(UserRole.LoggedUser);
 

@@ -18,9 +18,9 @@
 		<tr>
 			<td>${task.taskCode}-${task.taskNumber}</td>
 			<td>${task.title}</td>
-			<td>${task.reporter.name}</td>
-			<td>${task.assignee.name}</td>
-			<td><c:if test="${verifiedUserName eq task.reporter.name}"><a href="task?id=${task.id}">edit Task</a></c:if></td>
+			<td>${task.reporter.userName}</td>
+			<td>${task.assignee.userName}</td>
+			<td><c:if test="${verifiedUserName eq task.reporter.userName}"><a href="task?id=${task.id}">edit Task</a></c:if></td>
 		</tr>
 	</c:forEach>
 

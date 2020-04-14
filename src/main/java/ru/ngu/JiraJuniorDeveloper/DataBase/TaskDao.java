@@ -31,7 +31,6 @@ public class TaskDao {
         createdTask.setStatus(TaskStatus.ToDo);
 
         manager.persist(createdTask);
-       
         return createdTask;
     }
 
@@ -43,7 +42,7 @@ public class TaskDao {
     }
 
     public List<Task> findTasksByUser(String userName) {
-        return manager.createQuery("SELECT t from Task t where t.assignee.name=:userName or t.reporter.name=:userName", Task.class)
+        return manager.createQuery("SELECT t from Task t where t.assignee.userName=:userName or t.reporter.userName=:userName", Task.class)
                 .setParameter("userName",userName)
                 .getResultList();
     }

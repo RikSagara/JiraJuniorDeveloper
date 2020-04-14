@@ -8,10 +8,10 @@ public class User {
 
     @Id
     @GeneratedValue
-    private int Id;
+    private int id;
 
     @Column(nullable = false,unique = true)
-    private String name;
+    private String userName;
 
     @Column(nullable = false)
     private String password;
@@ -24,11 +24,11 @@ public class User {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public UserRole getRole() {
@@ -39,9 +39,9 @@ public class User {
         this.role = role;
     }
 
-    public String getName() { return name; }
+    public String getUserName() { return userName; }
 
-    public void setName(String name) { this.name = name; }
+    public void setUserName(String name) { this.userName = name; }
 
     public String getPassword() { return password; }
 

@@ -1,19 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<jsp:useBean id="taskForm" type="ru.ngu.JiraJuniorDeveloper.Web.Forms.ItemForm" scope="session" />
+<jsp:useBean id="data" type="ru.ngu.JiraJuniorDeveloper.Web.Forms.UserListForm" scope="request" />
 <html>
 <head>
 	<title>Создать Task</title>
 </head>
 <body>
-<form action="addTask" method="post" enctype="application/x-www-form-urlencoded">
+<%--@elvariable id="form" type="ru.ngu.JiraJuniorDeveloper.Web.Forms.ItemForm"--%>
+<form:form action="addTask" method="post" modelAttribute="form" enctype="application/x-www-form-urlencoded">
 	<table>
 		<tr>
 			<td>
 				Название
 			</td>
 			<td>
-				<input type="text" name="title"  >
+				<input name="title"  value="${form.title}">
 			</td>
 		</tr>
 		<tr>
@@ -21,7 +23,8 @@
 				Буквенный код
 			</td>
 			<td>
-				<input  name="itemCode" >
+				<input name="itemCode" value="${form.itemCode}" >
+				<form:errors path="itemCode" cssStyle="color: #ff0000" />
 			</td>
 		</tr>
 		<tr>
@@ -29,7 +32,8 @@
 				Цифровой код
 			</td>
 			<td>
-				<input name="itemNumber" >
+				<input name="itemNumber" value="${form.itemNumber}">
+				<form:errors path="itemNumber" cssStyle="color: #ff0000" />
 			</td>
 		</tr>
 		<tr>
@@ -37,7 +41,7 @@
 				Описание
 			</td>
 			<td>
-				<textarea rows="5" name="description" ></textarea>
+				<textarea rows="5" name="description" content="${form.description}"></textarea>
 			</td>
 		</tr>
 
@@ -47,9 +51,11 @@
 			</td>
 			<td>
 				<select name="assignee">
-					<c:forEach items="${users}" var="user">
-						<option value="${user.id}">${user.name}</option>
+
+					<c:forEach items="${data.users}" var="user">
+						<option value="${user.id}">${user.userName}</option>
 					</c:forEach>
+
 				</select>
 			</td>
 		</tr>
@@ -58,6 +64,6 @@
 	<p>
 		<input type="submit" value="Создать">
 	</p>
-</form>
+</form:form>
 </body>
 </html>

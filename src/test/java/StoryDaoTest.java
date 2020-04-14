@@ -1,6 +1,4 @@
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
 import ru.ngu.JiraJuniorDeveloper.Model.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -70,7 +66,7 @@ public class StoryDaoTest {
             s.setDescription("Описание стори через экземпляр класса");
             storyDao.createStory(s);
         }
-        List<Story> foundStories=storyDao.findStoriesByUser(assigneeSensei.getName());
+        List<Story> foundStories=storyDao.findStoriesByUser(assigneeSensei.getUserName());
         Assert.assertEquals(foundStories.size(),1);
 
     }

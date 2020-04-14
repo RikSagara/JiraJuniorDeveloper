@@ -35,7 +35,7 @@ public class UserTest {
     public void CreateAdmin()
     {
         User user = new User();
-        user.setName("admin");
+        user.setUserName("admin");
         user.setPassword("admin");
         user.setRole(UserRole.Admin);
 
@@ -58,7 +58,7 @@ public class UserTest {
     public void CreateLoggedUser()
     {
         User user = new User();
-        user.setName("scott");
+        user.setUserName("scott");
         user.setPassword("tiger");
         user.setRole(UserRole.LoggedUser);
 

@@ -18,9 +18,9 @@
 		<tr>
 			<td>${story.storyCode}-${story.storyNumber}</td>
 			<td>${story.title}</td>
-			<td>${story.reporter.name}</td>
-			<td>${story.assignee.name}</td>
-			<td><c:if test="${verifiedUserName eq story.reporter.name}"><a href="story?id=${story.id}">edit Story</a></c:if></td>
+			<td>${story.reporter.userName}</td>
+			<td>${story.assignee.userName}</td>
+			<td><c:if test="${verifiedUserName eq story.reporter.userName}"><a href="story?id=${story.id}">edit Story</a></c:if></td>
 		</tr>
 	</c:forEach>
 

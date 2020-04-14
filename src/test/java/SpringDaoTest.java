@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.ngu.JiraJuniorDeveloper.Configurations.TestConfiguration;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
+import ru.ngu.JiraJuniorDeveloper.DataBase.UserRepository;
 import ru.ngu.JiraJuniorDeveloper.Model.Story;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
 import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
@@ -16,11 +17,15 @@ import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SpringDaoTest {
     @Autowired
-    public UserDao userDao;
+    public UserRepository userDao;
 
     @Test
     public void CreateUser(){
-        User reporter =userDao.createUser("scotty","tigy", UserRole.LoggedUser);
+        User reporter =new User();
+        reporter.setUserName("Fill");
+        reporter.setRole(UserRole.LoggedUser);
+        reporter.setPassword("12356");
+        userDao.save(reporter);
 
     }
 }

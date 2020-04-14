@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
+import ru.ngu.JiraJuniorDeveloper.DataBase.UserRepository;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
 import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
     @Autowired
-    private UserDao users;
+    private UserRepository users;
 
 
     @GetMapping(path = "/login")
@@ -30,7 +31,7 @@ public class LoginController {
             return "redirect:/";
         }
 
-        User foundedUser = users.findUserByName(username);
+        User foundedUser = users.findUserByUserName(username);
 
         if (username != null && password != null && password.equals(foundedUser.getPassword())) {
             session.setAttribute("verifiedUserName", username);

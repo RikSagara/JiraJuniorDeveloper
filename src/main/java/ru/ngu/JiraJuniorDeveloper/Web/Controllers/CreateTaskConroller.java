@@ -2,13 +2,19 @@ package ru.ngu.JiraJuniorDeveloper.Web.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.ngu.JiraJuniorDeveloper.DataBase.TaskDao;
+import ru.ngu.JiraJuniorDeveloper.DataBase.TaskRepository;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
+import ru.ngu.JiraJuniorDeveloper.DataBase.UserRepository;
 import ru.ngu.JiraJuniorDeveloper.Model.Task;
 import ru.ngu.JiraJuniorDeveloper.Model.TaskStatus;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
 import ru.ngu.JiraJuniorDeveloper.Web.Forms.ItemForm;
+import ru.ngu.JiraJuniorDeveloper.Web.Forms.UserListForm;
 
 
 import javax.servlet.http.HttpSession;
@@ -18,28 +24,36 @@ import java.util.List;
 @Controller
 public class CreateTaskConroller {
     @Autowired
-    private UserDao users;
+    private UserRepository users;
 
     @Autowired
-    private TaskDao taskDao;
+    private TaskRepository taskDao;
+
+    @ModelAttribute("form")
+    public ItemForm getTaskForm() {
+        return new ItemForm();
+    }
 
     @GetMapping(path="/addTask")
-    public String getTaskForm(HttpSession session){
-        List<User> userList=users.findAllUsers();
-        session.setAttribute("taskForm",new ItemForm());
-        session.setAttribute("users", userList);
-        return "/TaskPages/createTask";
+    public String getTaskForm(ModelMap model, @ModelAttribute("form") ItemForm form){
+        UserListForm userListForm=new UserListForm();
+        userListForm.setUsers(users.findUsersAll());
+
+        model.addAttribute("data",userListForm);
+        return "TaskPages/createTask";
     }
 
     @PostMapping(path="/addTask")
-    public String doPost(@ModelAttribute("taskForm") ItemForm form, HttpSession session){
-
+    public String doPost(@Validated @ModelAttribute("form") ItemForm form,ModelMap model, HttpSession session, BindingResult validationResult){
+        if (validationResult.hasErrors()) {
+            return "TaskPages/createTask";
+        }
         Task createdTask=new Task();
         createdTask.setTitle(form.getTitle());
         createdTask.setStatus(TaskStatus.ToDo);
-        createdTask.setReporter(users.findUserByName(session.getAttribute("verifiedUserName").toString()));
-        if(form.getAssignee()!=null){
-            createdTask.setAssignee(users.findUserById(Integer.parseInt(form.getAssignee())));
+        createdTask.setReporter(users.findUserByUserName(session.getAttribute("verifiedUserName").toString()));
+        if(form.getAssignee()!=0){
+            createdTask.setAssignee(users.findUserById(form.getAssignee()));
         }
         createdTask.setTaskCode(form.getItemCode());
         try{
@@ -48,7 +62,7 @@ public class CreateTaskConroller {
             createdTask.setTaskNumber(1);
         }
         createdTask.setDescription(form.getDescription());
-        taskDao.createTask(createdTask);
+        taskDao.save(createdTask);
         return "redirect:/tasks";
 
     }

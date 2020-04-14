@@ -47,7 +47,7 @@ public class StoryDao {
 
 
     public List<Story> findStoriesByUser(String userName) {
-        return manager.createQuery("SELECT s from Story s where s.assignee.name=:userName or s.reporter.name=:userName", Story.class)
+        return manager.createQuery("SELECT s from Story s where s.assignee.userName=:userName or s.reporter.userName=:userName", Story.class)
                 .setParameter("userName",userName)
                 .getResultList();
     }

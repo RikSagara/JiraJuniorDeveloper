@@ -1,6 +1,4 @@
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +6,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.ngu.JiraJuniorDeveloper.Configurations.TestConfiguration;
-import ru.ngu.JiraJuniorDeveloper.DataBase.StoryDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.TaskDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
 import ru.ngu.JiraJuniorDeveloper.Model.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -72,7 +67,7 @@ public class TaskDaoTest {
             s.setDescription("Описание стори через экземпляр класса");
             taskDao.createTask(s);
         }
-        List<Task> foundTasks=taskDao.findTasksByUser(assigneeSensei.getName());
+        List<Task> foundTasks=taskDao.findTasksByUser(assigneeSensei.getUserName());
         Assert.assertEquals(foundTasks.size(),1);
 
     }

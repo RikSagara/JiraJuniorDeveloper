@@ -9,8 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import java.util.HashSet;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
@@ -43,12 +41,12 @@ public class StoryTest {
     public void CreateStory()
     {
         User reporter = new User();
-        reporter.setName("scott");
+        reporter.setUserName("scott");
         reporter.setPassword("tiger");
         reporter.setRole(UserRole.LoggedUser);
 
         User assignee = new User();
-        assignee.setName("student");
+        assignee.setUserName("student");
         assignee.setPassword("123456");
         assignee.setRole(UserRole.LoggedUser);
         Story createdStory=new Story();
@@ -82,12 +80,12 @@ public class StoryTest {
     {
         exceptionRule.expect(Exception.class);
         User reporter = new User();
-        reporter.setName("scott");
+        reporter.setUserName("scott");
         reporter.setPassword("tiger");
         reporter.setRole(UserRole.LoggedUser);
 
         User assignee = new User();
-        assignee.setName("student");
+        assignee.setUserName("student");
         assignee.setPassword("123456");
         assignee.setRole(UserRole.LoggedUser);
         Story createdStory=new Story();

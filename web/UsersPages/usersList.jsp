@@ -14,7 +14,7 @@
 
 	<c:forEach items="${users}" var="user">
 		<tr>
-			<td>${user.name}</td>
+			<td>${user.userName}</td>
 			<td><c:if test="${verifiedUserRole eq 'Admin'}">${user.password}</c:if></td>
 			<td><c:if test="${verifiedUserRole eq 'Admin'}"><a href="user?id=${user.id}">edit User</a></c:if></td>
 		</tr>

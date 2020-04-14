@@ -1,17 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>Регистрация пользователя</title>
 </head>
 <body>
-<form action="register" method="post" enctype="application/x-www-form-urlencoded">
+<%--@elvariable id="form" type="ru.ngu.JiraJuniorDeveloper.Web.Forms.RegistrationForm"--%>
+<form:form modelAttribute="form" action="register" method="post" enctype="application/x-www-form-urlencoded">
     <table>
     <tr>
         <td>
             Login:
         </td>
         <td>
-            <input type="text" name="name" value="${name}">
+            <input type="text" name="userName"  value="${form.userName}"/>
+            <form:errors path="userName" cssStyle="color: red" />
         </td>
     </tr>
     <tr>
@@ -19,7 +22,7 @@
             Password:
         </td>
         <td>
-            <input type="password" name="password" value="${password}">
+            <input type="password" name="password" value="${form.password}"/>
         </td>
     </tr>
     </table>
@@ -27,6 +30,6 @@
     <p>
         <input type="submit">
     </p>
-</form>
+</form:form>
 </body>
 </html>

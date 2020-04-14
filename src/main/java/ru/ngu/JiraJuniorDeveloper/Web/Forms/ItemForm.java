@@ -1,17 +1,22 @@
 package ru.ngu.JiraJuniorDeveloper.Web.Forms;
 
 import ru.ngu.JiraJuniorDeveloper.Model.TaskStatus;
+import ru.ngu.JiraJuniorDeveloper.Model.User;
+
+import javax.validation.constraints.Pattern;
 
 
 public class ItemForm {
 
     private String title;
 
+    @Pattern(regexp = "[A-Z]+",
+            message = "Only uppercase letters are allowed in Code.")
     private String itemCode;
 
     private int itemNumber;
 
-    private String assignee;
+    private int assignee;
 
     private TaskStatus status;
 
@@ -32,11 +37,11 @@ public class ItemForm {
         this.description = description;
     }
 
-    public String getAssignee() {
+    public int getAssignee() {
         return assignee;
     }
 
-    public void setAssignee(String assignee) {
+    public void setAssignee(int assignee) {
         this.assignee = assignee;
     }
 

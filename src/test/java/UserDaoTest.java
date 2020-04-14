@@ -1,6 +1,4 @@
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -8,18 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import ru.ngu.JiraJuniorDeveloper.Configurations.TestConfiguration;
-import ru.ngu.JiraJuniorDeveloper.DataBase.StoryDao;
 import ru.ngu.JiraJuniorDeveloper.DataBase.UserDao;
 import ru.ngu.JiraJuniorDeveloper.Model.User;
 import ru.ngu.JiraJuniorDeveloper.Model.UserRole;
 
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -79,7 +72,7 @@ public class UserDaoTest {
         userDao.createUser("RikSogara","12345", UserRole.LoggedUser);
         userDao.createUser("RikSgara","12345", UserRole.LoggedUser);
         User foundUser=userDao.findUserById(3);
-        Assert.assertEquals("RikSagara",foundUser.getName());
+        Assert.assertEquals("RikSagara",foundUser.getUserName());
         Assert.assertEquals("1234",foundUser.getPassword());
         Assert.assertEquals(UserRole.LoggedUser,foundUser.getRole());
 
