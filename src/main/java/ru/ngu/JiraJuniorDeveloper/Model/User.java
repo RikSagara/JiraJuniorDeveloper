@@ -1,5 +1,7 @@
 package ru.ngu.JiraJuniorDeveloper.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,6 +16,7 @@ public class User {
     private String userName;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
