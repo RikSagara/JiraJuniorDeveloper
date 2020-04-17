@@ -10,6 +10,7 @@
     <properties>
         <hibernate.version>5.4.14.Final</hibernate.version>
         <spring.version>5.2.5.RELEASE</spring.version>
+        <spring_security.version>5.2.1.RELEASE</spring_security.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
@@ -98,6 +99,28 @@
             <artifactId>spring-data-rest-webmvc</artifactId>
             <version>3.2.2.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring_security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring_security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring_security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <version>${spring_security.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

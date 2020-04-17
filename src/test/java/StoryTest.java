@@ -8,7 +8,12 @@ import ru.ngu.JiraJuniorDeveloper.Model.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.RollbackException;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static java.lang.invoke.MethodHandles.catchException;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
@@ -18,8 +23,7 @@ public class StoryTest {
     private EntityManagerFactory factory;
     private EntityManager manager;
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
+
 
     @Before
     public void connect() {
@@ -38,8 +42,7 @@ public class StoryTest {
     }
 
     @Test
-    public void CreateStory()
-    {
+    public void CreateStory() {
         User reporter = new User();
         reporter.setUserName("scott");
         reporter.setPassword("tiger");
@@ -75,10 +78,9 @@ public class StoryTest {
 
     }
 
-    @Test
-    public void CreateNonUniqueStory()
-    {
-        exceptionRule.expect(Exception.class);
+    @Test(expected = RollbackException.class)
+    public void CreateNonUniqueStory() {
+
         User reporter = new User();
         reporter.setUserName("scott");
         reporter.setPassword("tiger");
@@ -108,6 +110,7 @@ public class StoryTest {
         manager.persist(assignee);
         manager.persist(createdStory);
         manager.persist(nonUniqueStory);
+
         Story foundStory = manager.find(Story.class, createdStory.getId());
         assertNotNull(foundStory);
         assertSame(foundStory, createdStory);
