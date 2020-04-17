@@ -17,6 +17,8 @@ public class LoginController {
     @Autowired
     private UserRepository users;
 
+    public static final String VERIFIED_USER_NAME = "verifiedUserName";
+    public static final String VERIFIED_USER_ROLE = "verifiedUserRole";
 
     @GetMapping(path = "/login")
     public String loginPage(@RequestParam(required = false) String login) {
@@ -27,22 +29,29 @@ public class LoginController {
     public String doPost(HttpSession session,
                          @RequestParam("username") String username,
                          @RequestParam("password") String password) {
-        if (session.getAttribute("verifiedUserName") != null) {
+
+        if (session.getAttribute(VERIFIED_USER_NAME) != null) {
             return "redirect:/";
         }
 
         User foundedUser = users.findUserByUserName(username);
 
-        if (username != null && password != null && password.equals(foundedUser.getPassword())) {
-            session.setAttribute("verifiedUserName", username);
-            session.setAttribute("verifiedUserRole",foundedUser.getRole());
-            if(foundedUser.getRole().equals(UserRole.LoggedUser)) {
-                return "redirect:/";
-            }else{
-                return "redirect:/admin";
+
+        if ((username != null&&(!username.isEmpty())) &&
+                (password != null &&(!password.isEmpty()))) {
+
+            if (foundedUser==null||(!password.equals(foundedUser.getPassword()))) {
+                return "redirect:/login?login=" + username;
+            } else {
+                session.setAttribute(VERIFIED_USER_NAME, username);
+                session.setAttribute(VERIFIED_USER_ROLE, foundedUser.getRole());
+                if (foundedUser.getRole().equals(UserRole.LoggedUser)) {
+                    return "redirect:/";
+                } else {
+                    return "redirect:/admin";
+                }
             }
-        } else {
-            return "redirect:/login?login=" + username;
         }
+        return "redirect:/login";
     }
 }
